@@ -13,25 +13,27 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
-# Read data
-ds = xr.open_dataset('~/dados/ERA5_uv10m_mean_mon_2003_2020.nc')
+# Read data 
+u10m = xr.open_dataset('~/ERA5_u10m_mean_mon_2003_2020.nc')
+v10m = xr.open_dataset('~/ERA5_v10m_mean_mon_2003_2020.nc')
 
 # Monthly mean
-med = ds.groupby('time.month').mean()
+med_u10m = u10m.groupby('time.month').mean()
+med_v10m = v10m.groupby('time.month').mean()
 
 # Loop para calcular a média mensal da velocidade do vento a partir das componentes U e V
-variables = {'janeiro': (med.u10[0]**2 + med.v10[0]**2)**(1/2),
-             'fevereiro': (med.u10[1]**2 + med.v10[1]**2)**(1/2),
-             'março': (med.u10[2]**2 + med.v10[2]**2)**(1/2),
-             'abril': (med.u10[3]**2 + med.v10[3]**2)**(1/2),
-             'maio': (med.u10[4]**2 + med.v10[4]**2)**(1/2),
-             'junho': (med.u10[5]**2 + med.v10[5]**2)**(1/2),
-             'julho': (med.u10[6]**2 + med.v10[6]**2)**(1/2),
-             'agosto': (med.u10[7]**2 + med.v10[7]**2)**(1/2),
-             'setembro': (med.u10[8]**2 + med.v10[8]**2)**(1/2),
-             'outubro': (med.u10[9]**2 + med.v10[9]**2)**(1/2),
-             'novembro': (med.u10[10]**2 + med.v10[10]**2)**(1/2),
-             'dezembro': (med.u10[11]**2 + med.v10[11]**2)**(1/2)}
+variables = {'janeiro': (med_u10m.u10[0]**2 + med_v10m.v10[0]**2)**(1/2),
+             'fevereiro': (med_u10m.u10[1]**2 + med_v10m.v10[1]**2)**(1/2),
+             'março': (med_u10m.u10[2]**2 + med_v10m.v10[2]**2)**(1/2),
+             'abril': (med_u10m.u10[3]**2 + med_v10m.v10[3]**2)**(1/2),
+             'maio': (med_u10m.u10[4]**2 + med_v10m.v10[4]**2)**(1/2),
+             'junho': (med_u10m.u10[5]**2 + med_v10m.v10[5]**2)**(1/2),
+             'julho': (med_u10m.u10[6]**2 + med_v10m.v10[6]**2)**(1/2),
+             'agosto': (med_u10m.u10[7]**2 + med_v10m.v10[7]**2)**(1/2),
+             'setembro': (med_u10m.u10[8]**2 + med_v10m.v10[8]**2)**(1/2),
+             'outubro': (med_u10m.u10[9]**2 + med_v10m.v10[9]**2)**(1/2),
+             'novembro': (med_u10m.u10[10]**2 + med_v10m.v10[10]**2)**(1/2),
+             'dezembro': (med_u10m.u10[11]**2 + med_v10m.v10[11]**2)**(1/2)}
 
 for season, variable in variables.items():
 

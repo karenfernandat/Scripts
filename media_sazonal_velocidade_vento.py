@@ -14,21 +14,24 @@ import cartopy.feature as cfeature
 from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
 # Read data
-ds = xr.open_dataset('~/dados/ERA5_uv10m_mean_mon_2003_2020.nc')
+u10m = xr.open_dataset('~/ERA5_u10m_mean_mon_2003_2020.nc')
+v10m = xr.open_dataset('~/ERA5_v10m_mean_mon_2003_2020.nc')
 
 # Média Sazonal
-saz = ds.groupby('time.season').mean()
-djf = (saz.u10[0]**2+saz.v10[0]**2)**(1/2)
-mam = (saz.u10[2]**2+saz.v10[2]**2)**(1/2)
-jja = (saz.u10[1]**2+saz.v10[1]**2)**(1/2)
-son = (saz.u10[3]**2+saz.v10[3]**2)**(1/2)
+med_u10m = u10m.groupby('time.season').mean()
+med_v10m = v10m.groupby('time.season').mean()
+
+#Trimestres
+djf = (med_u10m.u10[0]**2 + med_v10m.v10[0]**2)**(1/2)
+mam = (med_u10m.u10[2]**2 + med_v10m.v10[2]**2)**(1/2)
+jja = (med_u10m.u10[1]**2 + med_v10m.v10[1]**2)**(1/2)
+son = (med_u10m.u10[3]**2 + med_v10m.v10[3]**2)**(1/2)
 
 # Loop para calcular a média sazonal da velocidade do vento
-
-variables = {'djf': (saz.u10[0]**2 + saz.v10[0]**2)**(1/2),
-              'mam': (saz.u10[2]**2 + saz.v10[2]**2)**(1/2),
-              'jja': (saz.u10[1]**2 + saz.v10[1]**2)**(1/2),
-              'son': (saz.u10[3]**2 + saz.v10[3]**2)**(1/2)}
+variables = {'djf': (med_u10m.u10[0]**2 + med_v10m.v10[0]**2)**(1/2),
+              'mam': (med_u10m.u10[2]**2 + med_v10m.v10[2]**2)**(1/2),
+              'jja': (med_u10m.u10[1]**2 + med_v10m.v10[1]**2)**(1/2),
+              'son': (med_u10m.u10[3]**2 + med_v10m.v10[3]**2)**(1/2)}
 for season, variable in variables.items():
 
     # Plot velocidade do média do vento
